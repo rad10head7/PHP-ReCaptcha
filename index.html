@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col" id="status">
+	<h4 class="text-center text-primary mt-3 p-2">Fill out the Fom to Test Your CAPTCHA</h4>
+        <form action="" method="post" class="form-submit" id="filloutForm">
+          <div class="form-group mb-3">
+            <input type="text" name="name" class="form-control" placeholder="Enter Your Name" required>
+          </div>
+          <div class="form-group mb-3">
+            <input type="email" name="status_email" class="form-control" placeholder="Enter Your E-Mail">
+          </div>
+          <div class="form-group mb-3">
+              <img src="captcha.php" alt="CAPTCHA" class="mb-3 captcha-image"><i class="fas fa-redo m-2 text-primary refresh-captcha" style="cursor:pointer;"></i>
+              <label class="form-label" for="captcha">Please Enter Captcha (case sensitive)</label>
+            <br>
+              <input type="text" class="form-control" id="captcha" name="captcha_challenge" pattern="[A-Z]{6}">
+          </div>
+          <div class="form-group mb-3">
+            <input type="submit" name="submit" value="Check Status" class="btn btn-info btn-block" style="width: -webkit-fill-available">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+
+    // Sending Form data to the server
+    $("#filloutForm").submit(function(e) {
+      e.preventDefault();
+
+      $.ajax({
+        url: 'action.php',
+        method: 'post',
+        data: $('form').serialize() + "&status=check",
+        success: function(response) {
+	  $("#status").html(response);
+        }
+      });
+    });
+
+    var refreshButton = document.querySelector(".refresh-captcha");
+    refreshButton.onclick = function() {
+      document.querySelector(".captcha-image").src = 'captcha.php?' + Date.now();
+    }
+  });
+  </script>
+</body>
+</html>
